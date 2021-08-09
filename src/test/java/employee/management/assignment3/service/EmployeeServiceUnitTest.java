@@ -53,7 +53,6 @@ public class EmployeeServiceUnitTest {
         employee.setFirstName("Test X");
         employee.setLastName("Test Y");
         when(employeeRepository.findAll()).thenReturn(Arrays.asList(employee));
-        //invoke and verify lookupAll
         assertEquals("Test X" , employeeManagementService.getAllEmployee().get(0).getFirstName());
     }
 
@@ -63,34 +62,27 @@ public class EmployeeServiceUnitTest {
         Employee employee = new Employee();
         employee.setFirstName("Test A");
         employee.setLastName("Test B");
-
         when(employeeRepository.findById(id)).thenReturn(Optional.of(employee));
-
-        //invoke and verify lookupRatingById
+        //invoke and verify getEmployeeById
         assertEquals(employeeManagementService.getEmployeeById(id).getBody().getFirstName(), "Test A");
     }
 
     @Test
     void update_Employee_Returns_Ok() throws ResourceNotFoundException {
-        //invoke update
-
         int id =1;
         ResponseEntity<Employee> employee = employeeManagementService.getEmployeeById(id);
         employee.getBody().setFirstName("testUpdate1");
         ResponseEntity<Employee> contactResponseEntity = employeeManagementService.updateEmployee(id,employee.getBody());
 
-        //verify tourRatingRepository.save invoked once
+        //verify employeeRepository.save invoked once
         verify(employeeRepository).save(any(Employee.class));
-
-        //verify and tourRating setter methods invoked
         verify(contactResponseEntity.getBody()).setFirstName("testUpdate1");
     }
 
     @Test
     void delete_Employee_Returns_NoContent_Ok() throws ResourceNotFoundException {
-        //invoke delete
         employeeManagementService.deleteEmployee(1);
-        //verify tourRatingRepository.delete invoked
+        //verify employeeRepository.delete invoked
         verify(employeeRepository).delete(any(Employee.class));
     }
 }
