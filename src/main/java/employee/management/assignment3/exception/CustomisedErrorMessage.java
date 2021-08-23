@@ -1,7 +1,9 @@
 package employee.management.assignment3.exception;
 
-import java.util.Date;
+import lombok.Getter;
 
+import java.util.Date;
+@Getter
 public class CustomisedErrorMessage {
     private String message;
     private String details;
@@ -13,15 +15,4 @@ public class CustomisedErrorMessage {
         this.date = date;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public Date getDate() {
-        return date;
-    }
 }

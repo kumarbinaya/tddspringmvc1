@@ -43,78 +43,36 @@ class EmployeeManagementControllerUnitTest {
 
     @Test
     void create_Employee_Return_Ok() throws Exception {
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setFirstName("binaya");
-        employee.setLastName("kumar");
-        employee.setEmail("bk@gmail.com");
-        Mockito.when(employeeManagementService.addNewEmployee(Mockito.any(Employee.class))).thenReturn(employee);
-        /*MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/contact/").contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8").content(this.mapper.writeValueAsBytes(contact));*/
-        mockMvc.perform(post("/employee").contentType(MediaType.APPLICATION_JSON_VALUE).content(this.mapper.writeValueAsString(employee))).andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value(employee.getFirstName()));
+        Mockito.when(employeeManagementService.addNewEmployee(Mockito.any(Employee.class))).thenReturn(getEmployees().get(0));
+        mockMvc.perform(post("/employee").contentType(MediaType.APPLICATION_JSON_VALUE).content(this.mapper.writeValueAsString(getEmployees().get(0)))).andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value(getEmployees().get(0).getFirstName()));
 
     }
 
     @Test
     void get_AllEmployee_ReturnsAllEmployee_Ok() throws Exception {
 
-        List<Employee> employeeList = new ArrayList<>();
-        Employee employee1 = new Employee();
-        employee1.setId(1);
-        employee1.setFirstName("binaya");
-        employee1.setLastName("kumar");
-        employee1.setEmail("bk@email.com");
-        Employee employee2 = new Employee();
-        employee1.setId(2);
-        employee1.setFirstName("binaya2");
-        employee1.setLastName("kumar2");
-        employee1.setEmail("bk2@email.com");
-
-        employeeList.add(employee1);
-        employeeList.add(employee2);
         // Mocking out the Employee service
-        Mockito.when(employeeManagementService.getAllEmployee()).thenReturn(employeeList);
+        Mockito.when(employeeManagementService.getAllEmployee()).thenReturn(getEmployees());
 
-       /* mockMvc.perform(MockMvcRequestBuilders.get("/demo/vehicles").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].vin", is("AD23E5R98EFT3SL00"))).andExpect(jsonPath("$[0].make", is("Ford")))
-                .andExpect(jsonPath("$[1].vin", is("O90DEPADE564W4W83")))
-                .andExpect(jsonPath("$[1].make", is("Volkswagen")));*/
-        mockMvc.perform(get("/employee").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[0].firstName").value(employee1.getFirstName())).
-                andExpect(jsonPath("$[0].lastName").value(employee1.getLastName())).andExpect(jsonPath("$[0].email").value(employee1.getEmail())).andExpect(jsonPath("$[1].firstName").value(employee2.getFirstName())).
-                andExpect(jsonPath("$[1].lastName").value(employee2.getLastName())).andExpect(jsonPath("$[1].email").value(employee2.getEmail()));
-
-
+        mockMvc.perform(get("/employee").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[0].firstName").value(getEmployees().get(0).getFirstName())).
+                andExpect(jsonPath("$[0].lastName").value(getEmployees().get(0).getLastName())).andExpect(jsonPath("$[0].email").value(getEmployees().get(0).getEmail())).andExpect(jsonPath("$[1].firstName").value(getEmployees().get(0).getFirstName())).
+                andExpect(jsonPath("$[1].lastName").value(getEmployees().get(1).getLastName())).andExpect(jsonPath("$[1].email").value(getEmployees().get(1).getEmail()));
 
     }
 
     @Test
     void get_EmployeeById_Returns_Employee_OK() throws Exception {
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setFirstName("binaya");
-        employee.setLastName("kumar");
-        employee.setEmail("bk@email.com");
 
-        Mockito.when(employeeManagementService.getEmployeeById(1)).thenReturn(ResponseEntity.status(HttpStatus.OK).body(employee));
-        mockMvc.perform(get("/employee/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value(employee.getFirstName())).
-                andExpect(jsonPath("$.lastName").value(employee.getLastName())).andExpect(jsonPath("$.email").value(employee.getEmail()));
+        Mockito.when(employeeManagementService.getEmployeeById(1)).thenReturn(ResponseEntity.status(HttpStatus.OK).body(getEmployees().get(0)));
+        mockMvc.perform(get("/employee/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.firstName").value(getEmployees().get(0).getFirstName())).
+                andExpect(jsonPath("$.lastName").value(getEmployees().get(0).getLastName())).andExpect(jsonPath("$.email").value(getEmployees().get(0).getEmail()));
     }
 
     @Test
     void update_Employee_Returns_Ok() throws Exception {
 
-        Employee employee = new Employee();
-        employee.setId(1);
-        employee.setFirstName("binaya");
-        employee.setLastName("kumar");
-        employee.setEmail("bk@email.com");
-        Employee updateEmployee = new Employee();
-        updateEmployee.setFirstName("binaya1");
-        updateEmployee.setLastName("kumar1");
-        updateEmployee.setEmail("bk1@email.com");
-        Mockito.when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
-        Mockito.when(employeeManagementService.updateEmployee(1, employee)).thenReturn(ResponseEntity.status(HttpStatus.OK).body(employee));
+        Mockito.when(employeeRepository.findById(1)).thenReturn(Optional.of(getEmployees().get(0)));
+        Mockito.when(employeeManagementService.updateEmployee(1, getEmployees().get(0))).thenReturn(ResponseEntity.status(HttpStatus.OK).body(getEmployees().get(0)));
 
     }
 
@@ -130,5 +88,23 @@ class EmployeeManagementControllerUnitTest {
 
         verify(employeeManagementService, times(1)).deleteEmployee(id);
 
+    }
+
+    public List<Employee> getEmployees() {
+        List<Employee> employees = new ArrayList<>();
+
+        Employee employee1 = new Employee();
+        employee1.setId(1);
+        employee1.setFirstName("binaya");
+        employee1.setLastName("kumar");
+        employee1.setEmail("bk@email.com");
+        Employee employee2 = new Employee();
+        employee1.setId(2);
+        employee1.setFirstName("binaya2");
+        employee1.setLastName("kumar2");
+        employee1.setEmail("bk2@email.com");
+        employees.add(employee1);
+        employees.add(employee2);
+        return  employees;
     }
 }
