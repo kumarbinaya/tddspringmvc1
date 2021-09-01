@@ -69,14 +69,14 @@ public class EmployeeServiceUnitTest {
 
     @Test
     void update_Employee_Returns_Ok() throws ResourceNotFoundException {
-//        int id =1;
-//        ResponseEntity<Employee> employee = employeeManagementService.getEmployeeById(id);
-//        employee.getBody().setFirstName("testUpdate1");
-//        ResponseEntity<Employee> contactResponseEntity = employeeManagementService.updateEmployee(id,employee.getBody());
-//
-//        //verify employeeRepository.save invoked once
-//        verify(employeeRepository).save(any(Employee.class));
-//        verify(contactResponseEntity.getBody()).setFirstName("testUpdate1");
+        int id =1;
+        ResponseEntity<Employee> employee = employeeManagementService.getEmployeeById(id);
+        employee.getBody().setFirstName("testUpdate1");
+        ResponseEntity<Employee> contactResponseEntity = employeeManagementService.updateEmployee(id,employee.getBody());
+
+       //verify employeeRepository.save invoked once
+       verify(employeeRepository).save(any(Employee.class));
+       verify(contactResponseEntity.getBody()).setFirstName("testUpdate1");
     }
 
     @Test

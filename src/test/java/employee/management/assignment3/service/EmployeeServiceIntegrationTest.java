@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -49,11 +48,11 @@ public class EmployeeServiceIntegrationTest {
 
     @Test
     void update_Employee_Returns_Ok() throws ResourceNotFoundException {
-       /* int id =1;
-        Employee employee = employeeManagementService.getEmployeeById(id);
-        employee.setFirstName("testUpdate");
-         Employee contactResponseEntity = employeeManagementService.updateEmployee(id,employee);
-        assertEquals("testUpdate",contactResponseEntity.getFirstName());*/
+       int id =1;
+        ResponseEntity<Employee> employee = employeeManagementService.getEmployeeById(id);
+        employee.getBody().setFirstName("testUpdate");
+        ResponseEntity<Employee> contactResponseEntity = employeeManagementService.updateEmployee(id,(Employee) employee.getBody());
+        assertEquals("testUpdate",contactResponseEntity.getBody().getFirstName());
     }
 
     @Test
