@@ -16,7 +16,7 @@ Feature: Verifying CRUD operation in Employee Rest Api Testing
       Given I Set GET employee service api endpoint
       When I Set request HEADER
       And Send a GET HTTP request
-      Then I receive valid HTTP Response code 200
+      Then I receive valid HTTP Response
 
    Scenario: Delete Employee record
       Given I Set DELETE employee service api endpoint
